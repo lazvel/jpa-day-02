@@ -3,12 +3,11 @@
 	<persistence-unit name="JPADay02" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		
-		<class>it.eng.jpaday02.entity.City</class>
-		<class>it.eng.jpaday02.entity.Manufacturer</class>
-		<class>it.eng.jpaday02.entity.ContactPerson</class>
+		<class>com.engineering.jpaday02task1.entity.City</class>
+		<class>com.engineering.jpaday02task1.entity.Person</class>
 		
 		<properties>
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/eng_g1_jpa" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/eng_g1_jpa_task" />
 			<property name="javax.persistence.jdbc.user" value="root" />
 			<property name="javax.persistence.jdbc.password" value="" />
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />

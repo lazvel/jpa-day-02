@@ -5,6 +5,7 @@
 		
 		<class>it.eng.jpaday02.entity.City</class>
 		<class>it.eng.jpaday02.entity.Manufacturer</class>
+		<class>it.eng.jpaday02.entity.ContactPerson</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/eng_g1_jpa" />

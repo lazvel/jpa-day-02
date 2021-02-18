@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import it.eng.jpaday02.entity.City;
+import it.eng.jpaday02.entity.ContactPerson;
 import it.eng.jpaday02.entity.Manufacturer;
 
 public class ManufacturerService {
@@ -38,6 +39,15 @@ public class ManufacturerService {
 			if (city == null) {
 				em.persist(manufacturer.getCity());
 			}
+			
+			manufacturer = em.merge(manufacturer);
+			
+			// cuvanje kontakt osoba
+			for (ContactPerson contactPerson: manufacturer.getContactPersons()) {
+				contactPerson.setManufacturerId(manufacturer.getId());
+				em.merge(contactPerson);
+			}
+			
 			em.getTransaction().commit();
 			System.out.println("ID: " + manufacturer.getId());
 			return manufacturer;

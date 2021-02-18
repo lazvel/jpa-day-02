@@ -1,6 +1,8 @@
 package it.eng.jpaday02.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Manufacturer implements Serializable{
@@ -20,8 +23,13 @@ public class Manufacturer implements Serializable{
 	@JoinColumn(name = "city_number")
 	private City city;
 	
+	// preslikavanje 
+	@OneToMany
+	@JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
+	private List<ContactPerson> contactPersons;
+	
 	public Manufacturer() {
-		// TODO Auto-generated constructor stub
+		contactPersons = new ArrayList<>();
 	}
 
 	public Long getId() {
@@ -46,6 +54,14 @@ public class Manufacturer implements Serializable{
 
 	public void setCity(City city) {
 		this.city = city;
+	}
+	
+	public List<ContactPerson> getContactPersons() {
+		return contactPersons;
+	}
+
+	public void setContactPersons(List<ContactPerson> contactPersons) {
+		this.contactPersons = contactPersons;
 	}
 
 	@Override
