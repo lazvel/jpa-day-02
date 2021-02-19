@@ -6,6 +6,7 @@ import javax.persistence.Persistence;
 
 import com.engineering.jpaday02task1.entity.City;
 import com.engineering.jpaday02task1.entity.Contact;
+import com.engineering.jpaday02task1.entity.ContactType;
 import com.engineering.jpaday02task1.entity.Person;
 import com.engineering.jpaday02task1.service.CityService;
 import com.engineering.jpaday02task1.service.PersonService;
@@ -25,6 +26,8 @@ public class Start {
 		//start.personSaveOrUpdate(); // ovaj metod prodji opet
 		//start.personFindByCity(); 
 		start.savePersonWithContact();
+		
+		//start.personDelete();
 	}
 
 
@@ -66,22 +69,37 @@ public class Start {
 	}
 	
 	private void savePersonWithContact() {
-		Person person = new Person();
 		City city = new City();
 		city.setId(2L);
+		
+		Person person = new Person();
+		person.setId(null);
 		person.setFirstName("Laz");
 		person.setLastName("Vel");
-		person.setPersonalIdentityNumber("322222223");
+		person.setPersonalIdentityNumber("5553333122121");
 		
 		person.setBornCity(city);
 		
-		person.getContacts().add(new Contact("ll@gmail.com", "+381112233", "+38160555333", "eng.it", "linkedin.com/engit", "eng.it"));
-		person.getContacts().add(new Contact("fon@fon.bg.ac.rs", "+38113211", "+38160333555", "fon.ac.rs", "linkedin.com/fon", "fon.bg"));
+		person.getContacts().add(new Contact(null, ContactType.ADDRESS, "ul. Topolska 18", null));
+		person.getContacts().add(new Contact(null, ContactType.EMAIL, "lazvel@gmail.com", null));
+		person.getContacts().add(new Contact(null, ContactType.PHONE, "+38162555333", null));
+		person.getContacts().add(new Contact(null, ContactType.PHONE, "+38111555333", null));
 		
 		try {
 			person = personService.saveOrUpdate(person);
 			System.out.println(person);
 		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void personDelete() {
+		Person person = new Person();
+		person.setId(3L);
+		try {
+			personService.delete(person);
+			System.out.println("Osoba je obrisana");
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

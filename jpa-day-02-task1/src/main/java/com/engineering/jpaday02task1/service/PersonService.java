@@ -22,7 +22,7 @@ public class PersonService {
 		try {
 			em.getTransaction().begin();
 			// da li postoji grad
-			if (person.getBornCity() == null || person.getBornCity().getId() != null) {
+			if (person.getBornCity() == null || person.getBornCity().getId() == null) {
 				throw new Exception("Grad nije postavljen ili nema ID");
 			}
 			// da li postoji
@@ -47,6 +47,17 @@ public class PersonService {
 			em.close();
 		}
 		return person;
+	}
+	
+	public void delete(Person person) throws Exception {
+		EntityManager em = emf.createEntityManager();
+		Person existingPerson = em.find(Person.class, person.getId());
+		if (existingPerson == null) throw new Exception("Osoba ne postoji");
+		
+		em.getTransaction().begin();
+		em.remove(existingPerson);
+		em.getTransaction().commit();
+		em.close();
 	}
 	
 	public List<Person> findAll() {

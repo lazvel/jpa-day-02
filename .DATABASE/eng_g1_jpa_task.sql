@@ -38,21 +38,22 @@ INSERT INTO `city` (`id`, `number`, `name`) VALUES
 DROP TABLE IF EXISTS `contact`;
 CREATE TABLE IF NOT EXISTS `contact` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `email` varchar(64) NOT NULL,
-  `fiksni` varchar(32) NOT NULL,
-  `mobilni` varchar(32) NOT NULL,
-  `web` text NOT NULL,
-  `linkedin` text NOT NULL,
-  `gitlab` text NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `value` varchar(255) NOT NULL,
   `person_id` bigint(20) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_contact_person_id` (`person_id`),
   CONSTRAINT `fk_contact_person_id` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
 
 -- Dumping data for table eng_g1_jpa_task.contact: ~0 rows (approximately)
 DELETE FROM `contact`;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
+INSERT INTO `contact` (`id`, `type`, `value`, `person_id`) VALUES
+	(10, 'ADDRESS', 'ul. Topolska 18', 5),
+	(11, 'EMAIL', 'lazvel@gmail.com', 5),
+	(12, 'PHONE', '+38162555333', 5),
+	(13, 'PHONE', '+38111555333', 5);
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 
 -- Dumping structure for table eng_g1_jpa_task.person
@@ -66,13 +67,14 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (`id`),
   KEY `fk_person_born_city` (`born_city_id`),
   CONSTRAINT `fk_person_born_city` FOREIGN KEY (`born_city_id`) REFERENCES `city` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table eng_g1_jpa_task.person: ~0 rows (approximately)
+-- Dumping data for table eng_g1_jpa_task.person: ~1 rows (approximately)
 DELETE FROM `person`;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
 INSERT INTO `person` (`id`, `personal_identity_number`, `firstname`, `lastname`, `born_city_id`) VALUES
-	(1, '555333', 'zoxi', 'zox', 2);
+	(1, '555333', 'zoxi', 'zox', 2),
+	(5, '5553333122121', 'Laz', 'Vel', 2);
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -2,7 +2,7 @@ package com.engineering.jpaday02task1.entity;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -27,7 +27,8 @@ public class Person {
 	@JoinColumn(name = "born_city_id")
 	private City bornCity;
 	
-	@OneToMany
+	// one to many je lazy, a many to one je eager
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "person_id", referencedColumnName = "id")
 	private List<Contact> contacts;
 	
