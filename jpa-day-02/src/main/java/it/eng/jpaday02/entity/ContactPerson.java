@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,15 +22,19 @@ public class ContactPerson implements Serializable{
 	private String firstname;
 	private String lastname;
 	
-	@Column(name = "manufacturer_id")
-	private Long manufacturerId;
+//	@Column(name = "manufacturer_id")
+//	private Long manufacturerId;
+	
+	@ManyToOne
+	private Manufacturer manufacturer;
 	
 	public ContactPerson() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public ContactPerson(String firstname, String lastname) {
+	public ContactPerson(Long id, String firstname, String lastname) {
 		super();
+		this.id = id;
 		this.firstname = firstname;
 		this.lastname = lastname;
 	}
@@ -58,13 +63,27 @@ public class ContactPerson implements Serializable{
 		this.lastname = lastname;
 	}
 
-	public Long getManufacturerId() {
-		return manufacturerId;
+	public Manufacturer getManufacturer() {
+		return manufacturer;
 	}
 
-	public void setManufacturerId(Long manufacturerId) {
-		this.manufacturerId = manufacturerId;
+	public void setManufacturer(Manufacturer manufacturer) {
+		this.manufacturer = manufacturer;
 	}
+
+	@Override
+	public String toString() {
+		return "ContactPerson [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", manufacturer="
+				+ manufacturer.getId() + "]";
+	}
+
+//	public Long getManufacturerId() {
+//		return manufacturerId;
+//	}
+//
+//	public void setManufacturerId(Long manufacturerId) {
+//		this.manufacturerId = manufacturerId;
+//	}
 	
 	
 }

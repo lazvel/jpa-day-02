@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,17 +24,24 @@ public class Person {
 	private String firstName;
 	private String lastName;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "born_city_id")
 	private City bornCity;
 	
-	// one to many je lazy, a many to one je eager
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "person_id", referencedColumnName = "id")
+	// one to many je lazy, a many to one je eager( ako stavimo eager on ce trajno da je povlaci)
+//	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+//	@JoinColumn(name = "person_id", referencedColumnName = "id")
+//	private List<Contact> contacts;
+	
+	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Contact> contacts;
+	
+	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	private List<Hobby> hobbies;
 	
 	public Person() {
 		contacts = new ArrayList<Contact>();
+		hobbies = new ArrayList<Hobby>();
 	}
 
 	public Long getId() {
@@ -84,7 +92,25 @@ public class Person {
 	public void setContacts(List<Contact> contacts) {
 		this.contacts = contacts;
 	}
+	public void addContact(Contact contact) {
+		contacts.add(contact);
+		contact.setPerson(this);
+	}
+
+	public List<Hobby> getHobbies() {
+		return hobbies;
+	}
+
+	public void setHobbies(List<Hobby> hobbies) {
+		this.hobbies = hobbies;
+	}
 	
+	public void addHobby(Hobby hobby) {
+		hobbies.add(hobby);
+		hobby.setPerson(this);
+	}
+	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -92,6 +118,7 @@ public class Person {
 		result = prime * result + ((bornCity == null) ? 0 : bornCity.hashCode());
 		result = prime * result + ((contacts == null) ? 0 : contacts.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
+		result = prime * result + ((hobbies == null) ? 0 : hobbies.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
 		result = prime * result + ((personalIdentityNumber == null) ? 0 : personalIdentityNumber.hashCode());
@@ -122,6 +149,11 @@ public class Person {
 				return false;
 		} else if (!firstName.equals(other.firstName))
 			return false;
+		if (hobbies == null) {
+			if (other.hobbies != null)
+				return false;
+		} else if (!hobbies.equals(other.hobbies))
+			return false;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -143,7 +175,8 @@ public class Person {
 	@Override
 	public String toString() {
 		return "Person [id=" + id + ", personalIdentityNumber=" + personalIdentityNumber + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", bornCity=" + bornCity + ", contacts=" + contacts + "]";
+				+ ", lastName=" + lastName + ", bornCity=" + bornCity + ", contacts=" + contacts + ", hobbies="
+				+ hobbies + "]";
 	}
-	
+
 }

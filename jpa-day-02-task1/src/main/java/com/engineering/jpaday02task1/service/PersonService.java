@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 
 import com.engineering.jpaday02task1.entity.City;
 import com.engineering.jpaday02task1.entity.Contact;
+import com.engineering.jpaday02task1.entity.Hobby;
 import com.engineering.jpaday02task1.entity.Person;
 
 public class PersonService {
@@ -32,10 +33,11 @@ public class PersonService {
 			person.setBornCity(city);
 			person = em.merge(person);
 			
-			for (Contact contact : person.getContacts()) {
-				contact.setPersonId(person.getId());
-				em.merge(contact);
-			}
+			// unidirekciona
+//			for (Contact contact : person.getContacts()) {
+//				contact.setPersonId(person.getId());
+//				em.merge(contact);
+//			}
 			
 			em.getTransaction().commit();
 			
@@ -48,6 +50,7 @@ public class PersonService {
 		}
 		return person;
 	}
+	
 	
 	public void delete(Person person) throws Exception {
 		EntityManager em = emf.createEntityManager();
@@ -68,7 +71,7 @@ public class PersonService {
 	public List<Person> findByCity(City city) {
 		EntityManager em = emf.createEntityManager();
 		
-		List<Person> persons = em.createQuery("SELECT p FROM Person p WHERE p.bornCity = :city")
+		List<Person> persons = em.createQuery("SELECT DISTINCT p FROM Person p LEFT JOIN FETCH p.contacts c WHERE p.bornCity = :city")
 					.setParameter("city", city).getResultList();
 		
 		

@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 import com.engineering.jpaday02task1.entity.City;
 import com.engineering.jpaday02task1.entity.Contact;
 import com.engineering.jpaday02task1.entity.ContactType;
+import com.engineering.jpaday02task1.entity.Hobby;
 import com.engineering.jpaday02task1.entity.Person;
 import com.engineering.jpaday02task1.service.CityService;
 import com.engineering.jpaday02task1.service.PersonService;
@@ -25,9 +26,12 @@ public class Start {
 		//start.citySaveOrUpdate();
 		//start.personSaveOrUpdate(); // ovaj metod prodji opet
 		//start.personFindByCity(); 
-		start.savePersonWithContact();
+		//start.savePersonWithContact();
 		
 		//start.personDelete();
+		//start.savePersonWithContactBidirectional();
+		
+		start.personSaveOrUpdateWithHobby();
 	}
 
 
@@ -51,7 +55,6 @@ public class Start {
 		person.setFirstName("Zozi");
 		person.setLastName("Zox");
 		person.setPersonalIdentityNumber("1212121212121");
-		
 		person.setBornCity(city);
 		
 		try {
@@ -64,8 +67,14 @@ public class Start {
 	
 	private void personFindByCity() {
 		City city = new City();
-		city.setId(1L);
-		//List<Person> persons = 
+		city.setId(2L);
+		List<Person> persons = personService.findByCity(city);
+		for (Person person : persons) {
+			System.out.println(person);
+			for (Contact contact : person.getContacts()) {
+				System.out.println("\t" + contact);
+			}
+		}
 	}
 	
 	private void savePersonWithContact() {
@@ -73,17 +82,66 @@ public class Start {
 		city.setId(2L);
 		
 		Person person = new Person();
-		person.setId(null);
+		person.setId(null); // nova je osoba
 		person.setFirstName("Laz");
 		person.setLastName("Vel");
 		person.setPersonalIdentityNumber("5553333122121");
 		
 		person.setBornCity(city);
 		
-		person.getContacts().add(new Contact(null, ContactType.ADDRESS, "ul. Topolska 18", null));
-		person.getContacts().add(new Contact(null, ContactType.EMAIL, "lazvel@gmail.com", null));
-		person.getContacts().add(new Contact(null, ContactType.PHONE, "+38162555333", null));
-		person.getContacts().add(new Contact(null, ContactType.PHONE, "+38111555333", null));
+//		person.getContacts().add(new Contact(null, ContactType.ADDRESS, "ul. Topolska 18", null));
+//		person.getContacts().add(new Contact(null, ContactType.EMAIL, "lazvel@gmail.com", null));
+//		person.getContacts().add(new Contact(null, ContactType.PHONE, "+38162555333", null));
+//		person.getContacts().add(new Contact(null, ContactType.PHONE, "+38111555333", null));
+		
+		try {
+			person = personService.saveOrUpdate(person);
+			System.out.println(person);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void savePersonWithContactBidirectional() {
+		City city = new City();
+		city.setId(2L);
+		
+		Person person = new Person();
+		person.setId(null);
+		person.setFirstName("Jok");
+		person.setLastName("Ic");
+		person.setPersonalIdentityNumber("11112222");
+		
+		person.setBornCity(city);
+		
+		person.addContact(new Contact(null, ContactType.ADDRESS, "bidirekciona 1"));
+		person.addContact(new Contact(null, ContactType.PHONE, "011 212 321"));
+		person.addContact(new Contact(null, ContactType.PHONE, "062 212 321"));
+		
+		try {
+			person = personService.saveOrUpdate(person);
+			System.out.println(person);
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+	private void personSaveOrUpdateWithHobby() {
+		City city = new City();
+		city.setId(2L);
+		
+		Person person = new Person();
+		person.setId(null);
+		person.setFirstName("Zozi");
+		person.setLastName("Zox");
+		person.setPersonalIdentityNumber("1234567");
+		
+		person.setBornCity(city);
+		
+		// novo za hobby
+		person.addHobby(new Hobby(null, "Sport"));
+		person.addHobby(new Hobby(null, "Kuvanje"));
+		
 		
 		try {
 			person = personService.saveOrUpdate(person);

@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Contact implements Serializable{
@@ -23,20 +24,22 @@ public class Contact implements Serializable{
 	
 	private String value;
 	
-	@Column(name = "person_id")
-	private Long personId;
+//	@Column(name = "person_id")
+//	private Long personId;
+	
+	@ManyToOne
+	private Person person;
 	
 	public Contact() {
 		// TODO Auto-generated constructor stub
 	}
 
 	// sva polja pa tamo gde ne treba stavicemo null
-	public Contact(Long id, ContactType type, String value, Long personId) {
+	public Contact(Long id, ContactType type, String value ) {
 		super();
 		this.id = id;
 		this.type = type;
 		this.value = value;
-		this.personId = personId;
 	}
 
 	public Long getId() {
@@ -63,17 +66,25 @@ public class Contact implements Serializable{
 		this.value = value;
 	}
 
-	public Long getPersonId() {
-		return personId;
+//	public Long getPersonId() {
+//		return personId;
+//	}
+//
+//	public void setPersonId(Long personId) {
+//		this.personId = personId;
+//	}
+
+	public Person getPerson() {
+		return person;
 	}
 
-	public void setPersonId(Long personId) {
-		this.personId = personId;
+	public void setPerson(Person person) {
+		this.person = person;
 	}
 
 	@Override
 	public String toString() {
-		return "Contact [id=" + id + ", type=" + type + ", value=" + value + ", personId=" + personId + "]";
+		return "Contact [id=" + id + ", type=" + type + ", value=" + value + ", person=" + person + "]";
 	}
 	
 	

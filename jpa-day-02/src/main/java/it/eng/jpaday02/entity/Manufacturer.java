@@ -22,13 +22,16 @@ public class Manufacturer implements Serializable{
 	private Long id;
 	private String name;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "city_number")
 	private City city;
 	
-	// preslikavanje 
-	@OneToMany() // ako brisem proizvodjaca da se obrise i kontakt osoba za tog proizvodjaca
-	@JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
+	// preslikavanje, unidirekciona veza
+//	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true) // ako brisem proizvodjaca da se obrise i kontakt osoba za tog proizvodjaca
+//	@JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
+//	private List<ContactPerson> contactPersons;
+	
+	@OneToMany(mappedBy = "manufacturer",cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<ContactPerson> contactPersons;
 	
 	public Manufacturer() {
@@ -72,5 +75,8 @@ public class Manufacturer implements Serializable{
 		return "Manufacturer [id=" + id + ", name=" + name + ", city=" + city + "]";
 	}
 	
-	
+	public void addContactPerson(ContactPerson contactPerson) {
+		contactPersons.add(contactPerson);
+		contactPerson.setManufacturer(this);
+	}
 }

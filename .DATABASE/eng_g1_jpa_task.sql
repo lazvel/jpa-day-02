@@ -44,17 +44,42 @@ CREATE TABLE IF NOT EXISTS `contact` (
   PRIMARY KEY (`id`),
   KEY `fk_contact_person_id` (`person_id`),
   CONSTRAINT `fk_contact_person_id` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table eng_g1_jpa_task.contact: ~0 rows (approximately)
+-- Dumping data for table eng_g1_jpa_task.contact: ~10 rows (approximately)
 DELETE FROM `contact`;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
 INSERT INTO `contact` (`id`, `type`, `value`, `person_id`) VALUES
 	(10, 'ADDRESS', 'ul. Topolska 18', 5),
 	(11, 'EMAIL', 'lazvel@gmail.com', 5),
 	(12, 'PHONE', '+38162555333', 5),
-	(13, 'PHONE', '+38111555333', 5);
+	(13, 'PHONE', '+38111555333', 5),
+	(14, 'ADDRESS', 'bidirekciona 1', 6),
+	(15, 'PHONE', '011 212 321', 6),
+	(16, 'PHONE', '062 212 321', 6),
+	(17, 'ADDRESS', 'bidirekciona 1', 7),
+	(18, 'PHONE', '011 212 321', 7),
+	(19, 'PHONE', '062 212 321', 7);
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
+
+-- Dumping structure for table eng_g1_jpa_task.hobby
+DROP TABLE IF EXISTS `hobby`;
+CREATE TABLE IF NOT EXISTS `hobby` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(128) NOT NULL,
+  `person_id` bigint(20) unsigned DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_hobby_person_id` (`person_id`),
+  CONSTRAINT `fk_hobby_person_id` FOREIGN KEY (`person_id`) REFERENCES `person` (`id`) ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4;
+
+-- Dumping data for table eng_g1_jpa_task.hobby: ~0 rows (approximately)
+DELETE FROM `hobby`;
+/*!40000 ALTER TABLE `hobby` DISABLE KEYS */;
+INSERT INTO `hobby` (`id`, `name`, `person_id`) VALUES
+	(1, 'Sport', 8),
+	(2, 'Kuvanje', 8);
+/*!40000 ALTER TABLE `hobby` ENABLE KEYS */;
 
 -- Dumping structure for table eng_g1_jpa_task.person
 DROP TABLE IF EXISTS `person`;
@@ -67,14 +92,17 @@ CREATE TABLE IF NOT EXISTS `person` (
   PRIMARY KEY (`id`),
   KEY `fk_person_born_city` (`born_city_id`),
   CONSTRAINT `fk_person_born_city` FOREIGN KEY (`born_city_id`) REFERENCES `city` (`id`) ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4;
 
--- Dumping data for table eng_g1_jpa_task.person: ~1 rows (approximately)
+-- Dumping data for table eng_g1_jpa_task.person: ~4 rows (approximately)
 DELETE FROM `person`;
 /*!40000 ALTER TABLE `person` DISABLE KEYS */;
 INSERT INTO `person` (`id`, `personal_identity_number`, `firstname`, `lastname`, `born_city_id`) VALUES
 	(1, '555333', 'zoxi', 'zox', 2),
-	(5, '5553333122121', 'Laz', 'Vel', 2);
+	(5, '5553333122121', 'Laz', 'Vel', 2),
+	(6, '11112222', 'Jok', 'Ic', 2),
+	(7, '11112222', 'Jok', 'Ic', 2),
+	(8, '1234567', 'Zozi', 'Zox', 2);
 /*!40000 ALTER TABLE `person` ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;

@@ -61,10 +61,13 @@ public class ManufacturerService {
 			System.out.println("ID: " + manufacturer.getId());
 			
 			// cuvanje kontakt osoba, ne moze da postoji bez nekog proizvodjaca
-			for (ContactPerson contactPerson : manufacturer.getContactPersons()) {
-				contactPerson.setManufacturerId(manufacturer.getId());
-				em.merge(contactPerson);
-			}
+//			//unidirekciona
+			//for (ContactPerson contactPerson : manufacturer.getContactPersons()) {
+//				contactPerson.setManufacturerId(manufacturer.getId());
+//				em.merge(contactPerson);
+//			}
+			// bidirekciona veza
+			
 			
 			em.getTransaction().commit();
 			System.out.println("ID: " + manufacturer.getId());

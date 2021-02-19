@@ -6,6 +6,7 @@
 		<class>com.engineering.jpaday02task1.entity.City</class>
 		<class>com.engineering.jpaday02task1.entity.Person</class>
 		<class>com.engineering.jpaday02task1.entity.Contact</class>
+		<class>com.engineering.jpaday02task1.entity.Hobby</class>
 		
 		<properties>
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3307/eng_g1_jpa_task" />
