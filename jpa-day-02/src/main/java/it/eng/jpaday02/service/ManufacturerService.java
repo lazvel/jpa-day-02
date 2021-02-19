@@ -14,6 +14,22 @@ public class ManufacturerService {
 		this.emf = emf;
 	}
 	
+	public Manufacturer findById(Long id) throws Exception {
+		EntityManager em = emf.createEntityManager();
+		Manufacturer manufacturer = em.find(Manufacturer.class, id);
+		try {
+			if (manufacturer == null) throw new Exception("ne postoji proizvodjac");
+		
+			manufacturer.getContactPersons().size();
+			return manufacturer;
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			em.close();
+		}
+		
+	}
+	
 	// manufacturer ima vezu sa city
 	public Manufacturer save(Manufacturer manufacturer) {
 		EntityManager em = emf.createEntityManager();
@@ -42,8 +58,10 @@ public class ManufacturerService {
 			
 			manufacturer = em.merge(manufacturer);
 			
-			// cuvanje kontakt osoba
-			for (ContactPerson contactPerson: manufacturer.getContactPersons()) {
+			System.out.println("ID: " + manufacturer.getId());
+			
+			// cuvanje kontakt osoba, ne moze da postoji bez nekog proizvodjaca
+			for (ContactPerson contactPerson : manufacturer.getContactPersons()) {
 				contactPerson.setManufacturerId(manufacturer.getId());
 				em.merge(contactPerson);
 			}
@@ -53,7 +71,7 @@ public class ManufacturerService {
 			return manufacturer;
 		} catch (Exception e) {
 			e.printStackTrace();
-			em.getTransaction().getRollbackOnly();
+			em.getTransaction().rollback();
 			throw e;
 		} finally {
 			em.close();

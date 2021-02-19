@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
 import com.engineering.jpaday02task1.entity.City;
+import com.engineering.jpaday02task1.entity.Contact;
 import com.engineering.jpaday02task1.entity.Person;
 
 public class PersonService {
@@ -31,9 +32,15 @@ public class PersonService {
 			person.setBornCity(city);
 			person = em.merge(person);
 			
+			for (Contact contact : person.getContacts()) {
+				contact.setPersonId(person.getId());
+				em.merge(contact);
+			}
+			
 			em.getTransaction().commit();
 			
 		} catch (Exception e) {
+			e.printStackTrace();
 			em.getTransaction().rollback();
 			//throw e;
 		} finally {

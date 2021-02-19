@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,17 +21,18 @@ public class Manufacturer implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	
 	@ManyToOne
 	@JoinColumn(name = "city_number")
 	private City city;
 	
 	// preslikavanje 
-	@OneToMany
+	@OneToMany() // ako brisem proizvodjaca da se obrise i kontakt osoba za tog proizvodjaca
 	@JoinColumn(name = "manufacturer_id", referencedColumnName = "id")
 	private List<ContactPerson> contactPersons;
 	
 	public Manufacturer() {
-		contactPersons = new ArrayList<>();
+		contactPersons = new ArrayList<ContactPerson>();
 	}
 
 	public Long getId() {

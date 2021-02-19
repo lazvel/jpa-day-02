@@ -1,5 +1,8 @@
 package com.engineering.jpaday02task1.entity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -7,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+
 
 @Entity
 public class Person {
@@ -22,8 +27,12 @@ public class Person {
 	@JoinColumn(name = "born_city_id")
 	private City bornCity;
 	
+	@OneToMany
+	@JoinColumn(name = "person_id", referencedColumnName = "id")
+	private List<Contact> contacts;
+	
 	public Person() {
-		// TODO Auto-generated constructor stub
+		contacts = new ArrayList<Contact>();
 	}
 
 	public Long getId() {
@@ -66,13 +75,21 @@ public class Person {
 		this.bornCity = bornCity;
 	}
 	
-	
 
+	public List<Contact> getContacts() {
+		return contacts;
+	}
+
+	public void setContacts(List<Contact> contacts) {
+		this.contacts = contacts;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
 		result = prime * result + ((bornCity == null) ? 0 : bornCity.hashCode());
+		result = prime * result + ((contacts == null) ? 0 : contacts.hashCode());
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
@@ -93,6 +110,11 @@ public class Person {
 			if (other.bornCity != null)
 				return false;
 		} else if (!bornCity.equals(other.bornCity))
+			return false;
+		if (contacts == null) {
+			if (other.contacts != null)
+				return false;
+		} else if (!contacts.equals(other.contacts))
 			return false;
 		if (firstName == null) {
 			if (other.firstName != null)
@@ -120,7 +142,7 @@ public class Person {
 	@Override
 	public String toString() {
 		return "Person [id=" + id + ", personalIdentityNumber=" + personalIdentityNumber + ", firstName=" + firstName
-				+ ", lastName=" + lastName + ", bornCity=" + bornCity + "]";
+				+ ", lastName=" + lastName + ", bornCity=" + bornCity + ", contacts=" + contacts + "]";
 	}
 	
 }
