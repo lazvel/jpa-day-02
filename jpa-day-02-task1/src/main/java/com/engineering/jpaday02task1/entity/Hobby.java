@@ -6,10 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
 
 @Entity
-public class Hobby implements Serializable{
+public class Hobby implements Serializable {
 private static final long serialVersionUID = 19022021140300L;
 	
 	@Id
@@ -17,8 +16,6 @@ private static final long serialVersionUID = 19022021140300L;
 	private Long id;
 	private String name;
 	
-	@ManyToOne
-	private Person person;
 	
 	public Hobby() {
 		// TODO Auto-generated constructor stub
@@ -46,17 +43,40 @@ private static final long serialVersionUID = 19022021140300L;
 		this.name = name;
 	}
 
-	public Person getPerson() {
-		return person;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((name == null) ? 0 : name.hashCode());
+		return result;
 	}
 
-	public void setPerson(Person person) {
-		this.person = person;
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Hobby other = (Hobby) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		if (name == null) {
+			if (other.name != null)
+				return false;
+		} else if (!name.equals(other.name))
+			return false;
+		return true;
 	}
 
 	@Override
 	public String toString() {
-		return "Hobby [id=" + id + ", name=" + name + ", person=" + person + "]";
+		return "Hobby [id=" + id + ", name=" + name + "]";
 	}
 	
 }

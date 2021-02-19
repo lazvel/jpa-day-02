@@ -17,6 +17,17 @@ public class PersonService {
 		this.emf = emf;
 	}
 	
+	public Person findById(Long id) {
+		EntityManager em = emf.createEntityManager();
+		Person person = em.find(Person.class, id);
+		// napuni listu hobija za ovu osobu
+		person.getHobbies().size();
+		person.getContacts().size();
+		
+		em.close();
+		return person; // vraca se null ako osoba ne postoji
+	}
+	
 	public Person saveOrUpdate(Person person) {
 		EntityManager em = emf.createEntityManager();
 		
@@ -67,15 +78,17 @@ public class PersonService {
 		
 		return null;
 	}
-	
+	// prikaz osoba sa hobijima iz tacno odredjenog grada(prosireno sa jos jednim join)
 	public List<Person> findByCity(City city) {
 		EntityManager em = emf.createEntityManager();
 		
-		List<Person> persons = em.createQuery("SELECT DISTINCT p FROM Person p LEFT JOIN FETCH p.contacts c WHERE p.bornCity = :city")
+		List<Person> persons = em.createQuery("SELECT DISTINCT p FROM Person p LEFT JOIN FETCH p.contacts c LEFT JOIN FETCH p.hobbies h WHERE p.bornCity = :city")
 					.setParameter("city", city).getResultList();
 		
 		
 		em.close();
 		return persons;
 	}
+	
+	
 }

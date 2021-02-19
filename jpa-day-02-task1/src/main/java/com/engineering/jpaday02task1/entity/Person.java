@@ -1,7 +1,10 @@
 package com.engineering.jpaday02task1.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +13,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
@@ -36,12 +41,15 @@ public class Person {
 	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
 	private List<Contact> contacts;
 	
-	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-	private List<Hobby> hobbies;
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+	@JoinTable(name = "person_hobby",
+			joinColumns = @JoinColumn(name = "person_id"),
+			inverseJoinColumns = @JoinColumn(name = "hobby_id"))
+	private Set<Hobby> hobbies;
 	
 	public Person() {
 		contacts = new ArrayList<Contact>();
-		hobbies = new ArrayList<Hobby>();
+		hobbies = new HashSet<Hobby>();
 	}
 
 	public Long getId() {
@@ -97,19 +105,17 @@ public class Person {
 		contact.setPerson(this);
 	}
 
-	public List<Hobby> getHobbies() {
+	public Set<Hobby> getHobbies() {
 		return hobbies;
 	}
 
-	public void setHobbies(List<Hobby> hobbies) {
+	public void setHobbies(Set<Hobby> hobbies) {
 		this.hobbies = hobbies;
 	}
 	
 	public void addHobby(Hobby hobby) {
 		hobbies.add(hobby);
-		hobby.setPerson(this);
 	}
-	
 
 	@Override
 	public int hashCode() {
